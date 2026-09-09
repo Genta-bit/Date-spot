@@ -10,15 +10,6 @@ const CATS = [
 const CAT_COLOR = { daily: "#e0912f", nearby: "#3f9d8f", far: "#c9557b" };
 const CAT_SOFT  = { daily: "rgba(224,145,47,.14)", nearby: "rgba(63,157,143,.14)", far: "rgba(201,85,123,.16)" };
 
-const SAMPLES = [
-  { text: "近所のカフェでモーニング",   category: "daily" },
-  { text: "夜の散歩＆コンビニスイーツ", category: "daily" },
-  { text: "隣町の水族館",             category: "nearby" },
-  { text: "大きい公園でピクニック",     category: "nearby" },
-  { text: "温泉に一泊",               category: "far" },
-  { text: "海の見える街へドライブ",     category: "far" },
-];
-
 const LS_SPOTS = "dateRoulette.spots.v1";
 const LS_NAME  = "dateRoulette.name.v1";
 const LS_PICK  = "dateRoulette.lastPick.v1";
@@ -138,14 +129,6 @@ async function start() {
   fb = await initFirebase();
 
   if (!fb) {
-    // ローカルモード：空ならサンプルを入れる
-    if (!state.spots.length) {
-      state.spots = SAMPLES.map((s, i) => ({
-        id: "sample-" + i, text: s.text, category: s.category,
-        addedBy: "例", createdAt: i, visited: false,
-      }));
-      saveLocal();
-    }
     setSync("off", "この端末だけに保存中");
     render();
     return;
@@ -171,7 +154,6 @@ async function start() {
     });
     arr.sort((a, b) => a.createdAt - b.createdAt);
     state.spots = arr;
-    maybeSeed();
     render();
   }, (err) => {
     console.warn("読み取りエラー:", err);
@@ -183,19 +165,6 @@ async function start() {
     state.lastPick = snap.val() || null;
     renderLastPick();
   }, () => {});
-}
-
-let seeded = false;
-function maybeSeed() {
-  if (seeded || !fb) return;
-  seeded = true;
-  if (state.spots.length === 0) {
-    SAMPLES.forEach((s, i) => {
-      fb.set(fb.ref(fb.db, "spots/sample-" + i), {
-        text: s.text, category: s.category, addedBy: "例", createdAt: i + 1, visited: false,
-      }).catch(() => {});
-    });
-  }
 }
 
 function setSync(cls, text) {
