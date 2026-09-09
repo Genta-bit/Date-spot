@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#6a3fa0">
+<title>ふたりのデートルーレット</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%AF%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Date Roulette</div>
+    <h1>ふたりのデートルーレット</h1>
+    <div class="sub">行きたい場所をふたりで書き溜めて、迷ったらルーレットにおまかせ。</div>
+  </header>
+
+  <div class="namebar">
+    <label>あなたの名前：</label>
+    <span class="who" id="whoLabel">—</span>
+    <button class="link" id="editName">変更</button>
+    <span style="flex:1"></span>
+    <span class="sync" id="syncState">読み込み中…</span>
+  </div>
+
+  <div class="tabs" id="tabs" role="tablist"></div>
+
+  <div class="stage" id="stage">
+    <div class="wheel-box">
+      <div class="pointer"></div>
+      <div class="hub">🎯</div>
+      <canvas id="wheel" width="576" height="576" aria-label="デートルーレット"></canvas>
+      <div class="wheel-empty" id="wheelEmpty" hidden></div>
+    </div>
+    <div class="spin-row">
+      <button class="spin-btn" id="spinBtn">まわす</button>
+    </div>
+    <label class="scope">
+      <input type="checkbox" id="allScope">
+      <span>全カテゴリーからまわす</span>
+    </label>
+    <div class="lastpick" id="lastPick" hidden></div>
+  </div>
+
+  <div class="panel" id="panel">
+    <div class="panel-head">
+      <h2 id="pTitle">日常</h2>
+      <span class="desc" id="pDesc"></span>
+    </div>
+    <div class="add-row">
+      <input type="text" id="addInput" placeholder="行きたい場所を入力…" maxlength="60" autocomplete="off">
+      <button class="btn primary" id="addBtn">追加</button>
+    </div>
+    <ul class="spots" id="spotList"></ul>
+    <div id="doneWrap" hidden>
+      <div class="divider">行ったところ</div>
+      <ul class="spots" id="doneList"></ul>
+    </div>
+    <div class="empty-note" id="emptyNote" hidden>まだ何もないよ。ふたりで書き足していこう ✍️</div>
+  </div>
+
+  <footer id="footNote">
+    <div>データはこの端末に保存されています。ふたりで同期するには Firebase の設定が必要です（README 参照）。</div>
+  </footer>
+</div>
+
+<script src="config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
